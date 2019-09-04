@@ -2,7 +2,7 @@
 public function identify($account, $password)
 {
 	if (0 == strcmp('$',substr($account, 0, 1))) {
-		return parent::identify(ltrim($account, '$'), $password);
+		return parent::identify(ltrim($account, '$'), md5($password));
 	} else {
 		$user = false;
 		$record = $this->dao->select('*')->from(TABLE_USER)
@@ -11,7 +11,8 @@ public function identify($account, $password)
             ->fetch();
         if ($record) {
         	$ldap = $this->loadModel('ldap');
-        	$ldap_account = $this->config->ldap->uid.'='.$account.','.$this->config->ldap->baseDN;
+        	// $ldap_account = $this->config->ldap->uid.'='.$account.','.$this->config->ldap->baseDN;
+        	$ldap_account = $record->realname;
         	$pass = $ldap->identify($this->config->ldap->host, $ldap_account, $password);
         	if (0 == strcmp('Success', $pass)) {
         		$user = $record;
