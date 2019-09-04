@@ -14,3 +14,22 @@
   - 问: 连接是 ok 但是同步了 0 位用户
   - 答: 这种情况的话, 保存设置后再点击手动同步就可以正常同步(<del>原来的版本就有的问题懒得改了</del>) 
     <br/>注意: 所有的字段都是需要填写的
+
+### 修改原系统,关闭前端JS传值加密
+
+```shell
+vim zbox/app/zentao/module/user/js/login.js
+```
+
+```javascript
+
+$('#loginPanel #submit').click(function()
+    {
+        var password = $('input:password').val().trim();
+        var rand = $('input#verifyRand').val();
+        // if(password.length != 32 && typeof(md5) == 'function') $('input:password').val(md5(md5(password) + rand));
+        if(password.length != 32 && typeof(md5) == 'function') $('input:password').val(password);
+    });
+
+
+```
