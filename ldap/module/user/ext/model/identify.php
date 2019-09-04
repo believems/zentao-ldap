@@ -2,7 +2,7 @@
 public function identify($account, $password)
 {
 	if (0 == strcmp('$',substr($account, 0, 1))) {
-		return parent::identify(ltrim($account, '$'), md5($password));
+		return parent::identify(ltrim($account, '$'), $password);
 	} else {
 		$user = false;
 		$record = $this->dao->select('*')->from(TABLE_USER)
